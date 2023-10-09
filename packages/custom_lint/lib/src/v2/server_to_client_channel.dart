@@ -173,6 +173,7 @@ class SocketCustomLintServerToClientChannel {
           [
             if (_server.watchMode) '--enable-vm-service=${await port}',
             join('lib', 'custom_lint_client.dart'),
+            _serverSocket.address.host,
             _serverSocket.port.toString(),
           ],
           workingDirectory: tempDir.path,
@@ -209,10 +210,12 @@ import 'package:custom_lint_builder/src/channel.dart';
 $imports
 
 void main(List<String> args) async {
-  final port = int.parse(args.single);
+  final host = args[0];
+  final port = int.parse(args[1]);
 
   runSocket(
     port: port,
+    host: host,
     includeBuiltInLints: ${_server.includeBuiltInLints},
     {$plugins},
   );
